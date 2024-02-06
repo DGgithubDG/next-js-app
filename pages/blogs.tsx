@@ -40,7 +40,7 @@ const Blogs: NextPage<Props> = ({ posts }: InferGetStaticPropsType <typeof getSt
 
     return(
         <>
-        <div className=" bg-blue-200 p-5 max-w-3xl mx-auto rounded">
+        <div className=" bg-blue-200 p-5 max-w-3xl mx-auto rounded padbot">
          {posts.map((post) => <BlogCard key={post.slug} title={post.title} description={post.meta} slug={post.slug}/>)}
         </div>
         </>

@@ -11,7 +11,7 @@ interface Props {
 const BlogCard: FC<Props> = ({ title, description, slug }): JSX.Element => {
   return (
       <Link href={'/blogs/' + slug}>
-        <div className='block'>
+        <div className='block padbot'>
         <h1 className='text-3xl '>{title}</h1>
       <p>{description}</p>
       </div>
