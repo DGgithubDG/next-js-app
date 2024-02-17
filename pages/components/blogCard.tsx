@@ -10,16 +10,23 @@ interface Props {
 
 const BlogCard: FC<Props> = ({ title, description, slug }): JSX.Element => {
   return (
-      <Link href={'/blogs/' + slug}>
-        <div className='block padbot'>
-        <h1 className='text-3xl '>{title}</h1>
-      <p>{description}</p>
+    <Link href={'/blogs/' + slug}>
+    <div className='bg-blue-200 rounded block padbot mb-4"'>
+      <div className='bg-dark p-5 rounded'>
+      <h1 className='text-3xl '>{title}</h1>
+    <p>{description}</p>
       </div>
-      </Link>
+ 
+    </div>
+    </Link>
+  
+
  
       
   );
 };
 
 export default BlogCard;
-2
+
+
+

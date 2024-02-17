@@ -1,23 +1,30 @@
-import { NextPage, GetStaticProps, GetStaticPaths, InferGetStaticPropsType, } from "next";
+import { NextPage, GetStaticProps, GetStaticPaths, } from "next";
 import { useRouter } from "next/router";
 import matter from "gray-matter";
 import fs from 'fs'
 import path from 'path'
-import { ParsedUrlQuery } from "querystring";
 
-type Props = InferGetStaticPropsType<typeof getStaticProps> 
+interface Props {
 
-const SinglePage: NextPage<Props> = (props) => {
+}
+
+const SinglePage: NextPage<Props> = () => {
 
     return (
         <div>
-            <div className="text-center">{props.post.title}</div>
-            <p className="text-center">{props.post.content}</p>
+            <div>Single Page</div>
 
         </div>
 
     )
 }
+
+export const getStaticProps: GetStaticProps = () => {
+    return {
+        props: {},
+    }
+  };
+
 
 export const getStaticPaths: GetStaticPaths = () => {
 
@@ -34,31 +41,5 @@ export const getStaticPaths: GetStaticPaths = () => {
         fallback: false
     }
 }
-
-type Post = {
-    post: {
-        title: string
-        content: string
-    }
-}
-
-export const getStaticProps: GetStaticProps<Post> = (context) => {
-    const { params } = context;
-    const { postSlug } = params as any;
-  
-    const filePathToRead = path.join(process.cwd(), 'posts', postSlug + ".md");
-    const fileContent = fs.readFileSync(filePathToRead, { encoding: 'utf-8' });
-    const { content, data } = matter(fileContent);
-  
-    return {
-      props: {
-        post: {
-          content,
-          title: data.title,
-        },
-      },
-    };
-  };
-
 
 export default SinglePage;

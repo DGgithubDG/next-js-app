@@ -13,7 +13,7 @@ interface PostAPIResponse {
 
 
 export const getStaticProps = async () => {
-    const {postInfo}: PostAPIResponse = await fetch('http://localhost:3000/api/posts').then(data => data.json());
+    const { postInfo }: PostAPIResponse = await fetch('http://localhost:3000/api/posts').then((data) => data.json());
 
     return {
         props: {posts: postInfo}
@@ -40,9 +40,12 @@ const Blogs: NextPage<Props> = ({ posts }: InferGetStaticPropsType <typeof getSt
 
     return(
         <>
-        <div className=" bg-blue-200 p-5 max-w-3xl mx-auto rounded padbot">
-         {posts.map((post) => <BlogCard key={post.slug} title={post.title} description={post.meta} slug={post.slug}/>)}
-        </div>
+       <div className=" p-5 max-w-3xl mx-auto rounded padbot">
+  {posts.map((post) => (
+    <BlogCard key={post.slug} title={post.title} description={post.meta} slug={post.slug} />
+  ))}
+</div>
+
         </>
     )
 }  
