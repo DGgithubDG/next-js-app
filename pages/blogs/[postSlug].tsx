@@ -1,27 +1,60 @@
-import { NextPage, GetStaticProps, GetStaticPaths, } from "next";
+import { NextPage, GetStaticProps, GetStaticPaths, InferGetStaticPropsType, } from "next";
 import { useRouter } from "next/router";
 import matter from "gray-matter";
 import fs from 'fs'
 import path from 'path'
+import { ParsedUrlQuery } from "querystring";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 
-interface Props {
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
-}
+const SinglePage: NextPage<Props> = ({post}) => {
 
-const SinglePage: NextPage<Props> = () => {
+    const {content, title} = post
 
     return (
         <div>
-            <div>Single Page</div>
+            <div className="max-w-3xl mx-auto">
+            <h1 className="semi-bold text-2xl py-5 text-white">{title}</h1>
+            <div className="prose text-white">
+            <MDXRemote {... content}/>
+
+            </div>
+            </div>
+ 
 
         </div>
 
     )
 }
 
-export const getStaticProps: GetStaticProps = () => {
+interface IstaticProps extends ParsedUrlQuery {
+    postSlug: string
+}
+
+type Post = {
+    post: {
+        title: string,
+        content: MDXRemoteSerializeResult,
+    }
+}
+
+export const getStaticProps: GetStaticProps<Post> = async (context) => {
+    const { params } = context;
+    const { postSlug } = params as IstaticProps;
+
+    const filePathToRead = path.join(process.cwd(), "posts/" + postSlug + ".md");
+    const fileContent = fs.readFileSync(filePathToRead ,{ encoding: "utf-8" });
+    // const {content, data} = matter(fileContent)
+const source: any = await serialize(fileContent, {parseFrontmatter: true})
     return {
-        props: {},
+        props: {
+            post: {
+                content: source,
+                title: source.frontmatter.title,
+            }
+        },
     }
   };
 
